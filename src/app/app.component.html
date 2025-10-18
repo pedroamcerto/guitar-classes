@@ -1,0 +1,207 @@
+<div class="guitar-app">
+  <header class="app-header">
+    <h1>🎸 Guitar Classes</h1>
+    <p class="subtitle">Escalas Pentatônicas & Acordes - Sistema CAGED</p>
+  </header>
+
+  <main class="main-content">
+    <section class="controls">
+      <div class="control-group">
+        <label for="key-select">Selecione o Tom:</label>
+        <select 
+          id="key-select" 
+          [(ngModel)]="selectedKey" 
+          (change)="onKeyChange()"
+          class="key-selector">
+          <option *ngFor="let note of notes" [value]="note">
+            {{ note }}
+          </option>
+        </select>
+      </div>
+
+      <div class="control-group" *ngIf="viewMode === 'scale'">
+        <label for="scale-type-select">Tipo de Escala:</label>
+        <select 
+          id="scale-type-select" 
+          [(ngModel)]="selectedScaleType" 
+          (change)="onScaleTypeChange()"
+          class="key-selector">
+          <option value="major">Pentatônica Maior</option>
+          <option value="minor">Pentatônica Menor</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label>Modo de Visualização:</label>
+        <div class="view-mode-toggle">
+          <button 
+            class="toggle-btn"
+            [class.active]="viewMode === 'scale'"
+            (click)="viewMode = 'scale'; onViewModeChange()">
+            🎵 Escala Pentatônica
+          </button>
+          <button 
+            class="toggle-btn"
+            [class.active]="viewMode === 'chord'"
+            (click)="viewMode = 'chord'; onViewModeChange()">
+            🎸 Montar Acorde
+          </button>
+        </div>
+      </div>
+
+      <div class="control-group" *ngIf="viewMode === 'chord'">
+        <label for="chord-select">Selecione o Acorde:</label>
+        <select 
+          id="chord-select" 
+          [(ngModel)]="selectedChord" 
+          (change)="onChordChange()"
+          class="key-selector">
+          <option [value]="null">-- Escolha um acorde --</option>
+          <option *ngFor="let chord of availableChords" [value]="chord.symbol">
+            {{ selectedKey }}{{ chord.symbol }} - {{ chord.name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="scale-info" *ngIf="viewMode === 'scale'">
+        <h3>{{ getCurrentScaleName() }} em {{ selectedKey }}:</h3>
+        <div class="scale-notes">
+          <span *ngFor="let note of getScaleNotes()" class="note-badge">
+            {{ note }}
+          </span>
+        </div>
+      </div>
+
+      <div class="scale-info" *ngIf="viewMode === 'chord' && selectedChord">
+        <h3>Acorde {{ getChordDisplayName() }}</h3>
+        
+        <!-- Seletor de Posição -->
+        <div class="shape-selector">
+          <label>Posição:</label>
+          <div class="shape-buttons">
+            <button 
+              *ngFor="let shape of getChordShapes(); let i = index"
+              class="shape-btn"
+              [class.active]="i === selectedChordShape"
+              (click)="selectedChordShape = i; onChordShapeChange()">
+              {{ shape.name }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Diagrama do Acorde -->
+        <div class="chord-diagram" *ngIf="getCurrentChordShape() as shape">
+          <h4>Como tocar:</h4>
+          <div class="diagram-grid">
+            <div class="diagram-string" *ngFor="let fret of shape.frets; let i = index">
+              <div class="string-label">{{ 6 - i }}ª</div>
+              <div class="fret-display" [class.muted]="fret === 'x'">
+                <span *ngIf="fret === 'x'" class="mute-mark">×</span>
+                <span *ngIf="fret === 0" class="open-mark">○</span>
+                <span *ngIf="fret !== 'x' && fret > 0" class="fret-info">
+                  <span class="fret-num">{{ fret }}ª casa</span>
+                  <span class="finger-badge" *ngIf="shape.fingers[i]">Dedo {{ shape.fingers[i] }}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="diagram-legend">
+            <span>× = não tocar</span>
+            <span>○ = corda solta</span>
+            <span>Dedos: 1=indicador, 2=médio, 3=anelar, 4=mínimo</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="fretboard-container">
+      <div class="fretboard-wrapper">
+        <!-- Legenda CAGED - Mostrar apenas no modo escala -->
+        <div class="caged-legend" *ngIf="viewMode === 'scale'">
+          <h3>Sistema CAGED:</h3>
+          <div class="legend-items">
+            <div class="legend-item shape-c"><span>C</span> Pattern 3</div>
+            <div class="legend-item shape-a"><span>A</span> Pattern 4</div>
+            <div class="legend-item shape-g"><span>G</span> Pattern 5</div>
+            <div class="legend-item shape-e"><span>E</span> Pattern 1</div>
+            <div class="legend-item shape-d"><span>D</span> Pattern 2</div>
+          </div>
+        </div>
+
+        <!-- Informação do Acorde -->
+        <div class="chord-info" *ngIf="viewMode === 'chord' && selectedChord">
+          <h3>🎸 Visualização no Braço</h3>
+          <p>As notas destacadas mostram onde você deve pressionar de acordo com a posição selecionada</p>
+        </div>
+
+        <!-- Braço da Guitarra -->
+        <div class="fretboard">
+          <!-- Números das casas -->
+          <div class="fret-numbers">
+            <div class="fret-number-spacer">Cordas</div>
+            <div 
+              *ngFor="let fret of [0,1,2,3,4,5,6,7,8,9,10,11,12,13]" 
+              class="fret-number"
+              [class.marker]="fret === 3 || fret === 5 || fret === 7 || fret === 9 || fret === 12">
+              {{ fret === 0 ? 'Open' : fret }}
+            </div>
+          </div>
+
+          <!-- Cordas e notas -->
+          <div class="strings">
+            <div *ngFor="let stringNotes of fretboard; let stringIdx = index" class="guitar-string">
+              <!-- Nome da corda -->
+              <div class="string-name">{{ tuning[stringIdx] }}</div>
+              
+              <!-- Notas na corda -->
+              <div class="frets-row">
+                <div 
+                  *ngFor="let guitarNote of stringNotes; let fretIdx = index" 
+                  class="fret-cell"
+                  [class.pattern-1]="viewMode === 'scale' && guitarNote.isInScale && getPatternNumber(fretIdx, stringIdx) === 1"
+                  [class.pattern-2]="viewMode === 'scale' && guitarNote.isInScale && getPatternNumber(fretIdx, stringIdx) === 2"
+                  [class.pattern-3]="viewMode === 'scale' && guitarNote.isInScale && getPatternNumber(fretIdx, stringIdx) === 3"
+                  [class.pattern-4]="viewMode === 'scale' && guitarNote.isInScale && getPatternNumber(fretIdx, stringIdx) === 4"
+                  [class.pattern-5]="viewMode === 'scale' && guitarNote.isInScale && getPatternNumber(fretIdx, stringIdx) === 5"
+                  [class.chord-note]="viewMode === 'chord' && guitarNote.isInChord">
+                  
+                  <!-- Modo Escala -->
+                  <div 
+                    *ngIf="viewMode === 'scale' && guitarNote.isInScale" 
+                    class="note"
+                    [class.root-note]="guitarNote.isRoot">
+                    <span class="note-label">{{ guitarNote.note }}</span>
+                  </div>
+
+                  <!-- Modo Acorde -->
+                  <div 
+                    *ngIf="viewMode === 'chord' && guitarNote.isInChord" 
+                    class="note chord-note-display"
+                    [class.root-note]="guitarNote.isChordRoot">
+                    <span class="note-label">{{ guitarNote.note }}</span>
+                    <span class="finger-label" *ngIf="guitarNote.finger">({{ guitarNote.finger }})</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="instructions">
+      <h3>Como usar:</h3>
+      <ol>
+        <li><strong>Modo Escala:</strong> Escolha entre Pentatônica Maior ou Menor e visualize com os padrões CAGED coloridos</li>
+        <li><strong>Modo Acorde:</strong> Monte e visualize diferentes tipos de acordes com posições práticas para tocar</li>
+        <li>Selecione o tom desejado e explore as posições no braço da guitarra</li>
+        <li>As notas com borda destacada são as tônicas (raiz) da escala ou acorde</li>
+        <li>Passe o mouse sobre as notas para destacá-las</li>
+        <li><strong>Dica:</strong> A pentatônica menor é relativa à maior (Ex: Am pentatônica = C pentatônica maior)</li>
+      </ol>
+    </section>
+  </main>
+</div>
+
+<router-outlet />
+

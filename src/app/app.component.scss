@@ -1,0 +1,692 @@
+// Variáveis SCSS - Design Clean
+$primary-color: #8A05BE;
+$secondary-color: #A445ED;
+$accent-color: #FF6B9D;
+$background: #0F0F23;
+$card-bg: rgba(255, 255, 255, 0.03);
+$text-color: #FFFFFF;
+$text-secondary: #9BA3AF;
+$border-color: rgba(255, 255, 255, 0.08);
+
+// Cores do sistema CAGED - Mais sutis
+$pattern-c: #FF6B9D;
+$pattern-a: #C77DFF;
+$pattern-g: #7209B7;
+$pattern-e: #FFB627;
+$pattern-d: #4CC9F0;
+
+// Mixins
+@mixin card {
+  background: $card-bg;
+  border: 1px solid $border-color;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+@mixin transition($property: all) {
+  transition: $property 0.2s ease;
+}
+
+@mixin hover-lift {
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+// Reset e estilos base
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.guitar-app {
+  min-height: 100vh;
+  background: $background;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: $text-color;
+  padding: 20px;
+}
+
+// Header
+.app-header {
+  text-align: center;
+  color: white;
+  margin-bottom: 40px;
+  
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: $text-color;
+    letter-spacing: -0.02em;
+  }
+  
+  .subtitle {
+    font-size: 1.1rem;
+    color: $text-secondary;
+    font-weight: 400;
+  }
+}
+
+// Main content
+.main-content {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+// Controls section
+.controls {
+  @include card;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  
+  .control-group {
+    margin-bottom: 24px;
+    
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: $text-color;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .key-selector {
+      width: 100%;
+      max-width: 280px;
+      padding: 12px 16px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: 1px solid $border-color;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      color: $text-color;
+      cursor: pointer;
+      @include transition;
+      
+      &:hover {
+        border-color: $secondary-color;
+        background: rgba(255, 255, 255, 0.05);
+      }
+      
+      &:focus {
+        outline: none;
+        border-color: $secondary-color;
+        background: rgba(255, 255, 255, 0.05);
+      }
+      
+      option {
+        background: #1a1a2e;
+        color: $text-color;
+        padding: 10px;
+      }
+    }
+  }
+  
+  .scale-info {
+    h3 {
+      color: $text-color;
+      margin-bottom: 12px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .scale-notes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      
+      .note-badge {
+        background: $secondary-color;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        @include transition;
+        
+        &:hover {
+          transform: translateY(-2px);
+          background: lighten($secondary-color, 5%);
+        }
+        
+        &.chord-badge {
+          background: $accent-color;
+          
+          &:hover {
+            background: lighten($accent-color, 5%);
+          }
+        }
+      }
+    }
+
+    // Shape Selector
+    .shape-selector {
+      margin-top: 1.5rem;
+
+      label {
+        display: block;
+        margin-bottom: 0.75rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: $text-color;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .shape-buttons {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .shape-btn {
+        padding: 10px 18px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid $border-color;
+        border-radius: 10px;
+        color: $text-secondary;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        @include transition;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.05);
+          border-color: $secondary-color;
+          color: $text-color;
+        }
+
+        &.active {
+          background: $secondary-color;
+          border-color: $secondary-color;
+          color: white;
+        }
+      }
+    }
+
+    // Chord Diagram
+    .chord-diagram {
+      margin-top: 1.5rem;
+      padding: 1.5rem;
+      background: rgba(139, 92, 246, 0.05);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      border-radius: 12px;
+
+      h4 {
+        margin: 0 0 1rem 0;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: $secondary-color;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .diagram-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 1rem;
+      }
+
+      .diagram-string {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .string-label {
+          font-size: 0.875rem;
+          font-weight: 700;
+          color: $text-secondary;
+          min-width: 35px;
+          text-align: center;
+        }
+
+        .fret-display {
+          flex: 1;
+          padding: 12px 16px;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid $border-color;
+          border-radius: 10px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          @include transition;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.05);
+          }
+
+          &.muted {
+            background: rgba(255, 59, 48, 0.08);
+            border-color: rgba(255, 59, 48, 0.3);
+          }
+
+          .mute-mark {
+            font-size: 1.3rem;
+            color: #FF3B30;
+            font-weight: bold;
+          }
+
+          .open-mark {
+            font-size: 1.3rem;
+            color: #30D158;
+            font-weight: bold;
+          }
+
+          .fret-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+
+            .fret-num {
+              color: $text-color;
+              font-weight: 600;
+              font-size: 0.9rem;
+            }
+
+            .finger-badge {
+              margin-left: auto;
+              padding: 6px 12px;
+              background: rgba(139, 92, 246, 0.15);
+              border: 1px solid $secondary-color;
+              border-radius: 8px;
+              font-size: 0.8rem;
+              font-weight: 600;
+              color: $secondary-color;
+              white-space: nowrap;
+            }
+          }
+        }
+      }
+
+      .diagram-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        font-size: 0.75rem;
+        color: $text-secondary;
+        padding-top: 1rem;
+        border-top: 1px solid $border-color;
+
+        span {
+          display: flex;
+          align-items: center;
+          gap: 0.3rem;
+        }
+      }
+    }
+  }
+  
+  .view-mode-toggle {
+    display: flex;
+    gap: 8px;
+    
+    .toggle-btn {
+      flex: 1;
+      padding: 12px 20px;
+      border: 1px solid $border-color;
+      background: rgba(255, 255, 255, 0.03);
+      color: $text-secondary;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      @include transition;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: $secondary-color;
+        color: $text-color;
+      }
+      
+      &.active {
+        background: $secondary-color;
+        border-color: $secondary-color;
+        color: white;
+      }
+    }
+  }
+}
+
+// Fretboard container
+.fretboard-container {
+  @include card;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  overflow-x: auto;
+  
+  // Scrollbar customizado
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: $secondary-color;
+    border-radius: 4px;
+    
+    &:hover {
+      background: lighten($secondary-color, 10%);
+    }
+  }
+}
+
+.fretboard-wrapper {
+  min-width: 1000px;
+}
+
+// CAGED Legend
+.caged-legend {
+  margin-bottom: 24px;
+  
+  h3 {
+    color: $text-color;
+    margin-bottom: 12px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .legend-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: white;
+      @include transition;
+      
+      span {
+        margin-right: 8px;
+        font-size: 1.1rem;
+        font-weight: 700;
+      }
+      
+      &:hover {
+        transform: translateY(-2px);
+      }
+      
+      &.shape-c { background: $pattern-c; }
+      &.shape-a { background: $pattern-a; }
+      &.shape-g { background: $pattern-g; }
+      &.shape-e { background: $pattern-e; }
+      &.shape-d { background: $pattern-d; }
+    }
+  }
+}
+
+// Chord Info
+.chord-info {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: rgba(255, 107, 157, 0.1);
+  border: 1px solid rgba(255, 107, 157, 0.3);
+  border-radius: 12px;
+  
+  h3 {
+    color: $accent-color;
+    margin-bottom: 8px;
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+  
+  p {
+    color: $text-secondary;
+    font-size: 0.9rem;
+    margin: 0;
+  }
+}
+
+// Fretboard
+.fretboard {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  
+  .fret-numbers {
+    display: flex;
+    margin-bottom: 12px;
+    
+    .fret-number-spacer {
+      width: 80px;
+      font-weight: 600;
+      color: $text-secondary;
+      display: flex;
+      align-items: center;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .fret-number {
+      flex: 1;
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: $text-secondary;
+      padding: 4px;
+      
+      &.marker {
+        color: $accent-color;
+        font-weight: 700;
+      }
+    }
+  }
+  
+  .strings {
+    .guitar-string {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      position: relative;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        left: 80px;
+        right: 0;
+        top: 50%;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.1);
+        z-index: 0;
+      }
+      
+      .string-name {
+        width: 80px;
+        font-weight: 700;
+        font-size: 1rem;
+        color: $text-color;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 8px;
+        border-radius: 8px;
+      }
+      
+      .frets-row {
+        display: flex;
+        flex: 1;
+        position: relative;
+        z-index: 1;
+        
+        .fret-cell {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 48px;
+          border-right: 1px solid rgba(255, 255, 255, 0.05);
+          position: relative;
+          
+          &:first-child {
+            border-left: 2px solid rgba(164, 69, 237, 0.3);
+          }
+          
+          .note {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+            color: white;
+            @include transition;
+            cursor: pointer;
+            
+            &:hover {
+              transform: scale(1.15);
+            }
+            
+            &.root-note {
+              width: 40px;
+              height: 40px;
+              font-size: 0.95rem;
+              border: 2px solid rgba(255, 255, 255, 0.5);
+            }
+          }
+          
+          // Cores por padrão CAGED - cores sólidas
+          &.pattern-1 .note { background: $pattern-e; }
+          &.pattern-2 .note { background: $pattern-d; }
+          &.pattern-3 .note { background: $pattern-c; }
+          &.pattern-4 .note { background: $pattern-a; }
+          &.pattern-5 .note { background: $pattern-g; }
+          
+          // Notas do acorde
+          &.chord-note .note {
+            background: $accent-color;
+          }
+          
+          .chord-note-display {
+            background: $accent-color !important;
+            
+            .finger-label {
+              font-size: 0.65rem;
+              margin-left: 0.25rem;
+              opacity: 0.9;
+              font-weight: 600;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Instructions
+.instructions {
+  @include card;
+  border-radius: 16px;
+  padding: 24px;
+  
+  h3 {
+    color: $text-color;
+    margin-bottom: 16px;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  
+  ol {
+    padding-left: 24px;
+    
+    li {
+      margin-bottom: 10px;
+      line-height: 1.6;
+      font-size: 0.95rem;
+      color: $text-secondary;
+      
+      &::marker {
+        color: $accent-color;
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .app-header {
+    h1 {
+      font-size: 2rem;
+    }
+    
+    .subtitle {
+      font-size: 1rem;
+    }
+  }
+  
+  .fretboard-container {
+    padding: 16px;
+  }
+  
+  .fretboard-wrapper {
+    min-width: 800px;
+  }
+  
+  .caged-legend {
+    .legend-items {
+      .legend-item {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+      }
+    }
+  }
+  
+  .controls,
+  .instructions {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .guitar-app {
+    padding: 12px;
+  }
+  
+  .app-header {
+    h1 {
+      font-size: 1.75rem;
+    }
+    
+    .subtitle {
+      font-size: 0.9rem;
+    }
+  }
+  
+  .controls,
+  .fretboard-container,
+  .instructions {
+    padding: 16px;
+    border-radius: 12px;
+  }
+  
+  .scale-notes {
+    .note-badge {
+      font-size: 0.875rem !important;
+      padding: 6px 12px !important;
+    }
+  }
+}
