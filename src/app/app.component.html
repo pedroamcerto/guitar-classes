@@ -1,7 +1,7 @@
 <div class="guitar-app">
   <header class="app-header">
     <h1>🎸 Guitar Classes</h1>
-    <p class="subtitle">Escalas Pentatônicas & Acordes - Sistema CAGED</p>
+    <p class="subtitle">Escalas Musicais & Acordes - Sistema CAGED</p>
   </header>
 
   <main class="main-content">
@@ -26,8 +26,14 @@
           [(ngModel)]="selectedScaleType" 
           (change)="onScaleTypeChange()"
           class="key-selector">
-          <option value="major">Pentatônica Maior</option>
-          <option value="minor">Pentatônica Menor</option>
+          <optgroup label="Escalas Pentatônicas">
+            <option value="pentaMajor">Pentatônica Maior</option>
+            <option value="pentaMinor">Pentatônica Menor</option>
+          </optgroup>
+          <optgroup label="Escalas Naturais">
+            <option value="naturalMajor">Natural Maior (Diatônica)</option>
+            <option value="naturalMinor">Natural Menor (Eólia)</option>
+          </optgroup>
         </select>
       </div>
 
@@ -38,7 +44,7 @@
             class="toggle-btn"
             [class.active]="viewMode === 'scale'"
             (click)="viewMode = 'scale'; onViewModeChange()">
-            🎵 Escala Pentatônica
+            🎵 Visualizar Escala
           </button>
           <button 
             class="toggle-btn"

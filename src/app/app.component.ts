@@ -40,7 +40,7 @@ interface Chord {
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'Guitar Classes - Escalas Pentatônicas';
+  title = 'Guitar Classes - Escalas Musicais';
   
   // Notas musicais
   notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -61,20 +61,28 @@ export class AppComponent {
   viewMode: 'scale' | 'chord' = 'scale';
   
   // Tipo de escala selecionada
-  selectedScaleType: 'major' | 'minor' = 'major';
+  selectedScaleType: 'pentaMajor' | 'pentaMinor' | 'naturalMajor' | 'naturalMinor' = 'pentaMajor';
   
   // Número de casas a exibir
   frets = 13;
   
   // Escalas disponíveis
   scales = {
-    major: {
+    pentaMajor: {
       name: 'Pentatônica Maior',
       intervals: [0, 2, 4, 7, 9]
     },
-    minor: {
+    pentaMinor: {
       name: 'Pentatônica Menor',
       intervals: [0, 3, 5, 7, 10]
+    },
+    naturalMajor: {
+      name: 'Escala Natural Maior (Diatônica)',
+      intervals: [0, 2, 4, 5, 7, 9, 11]
+    },
+    naturalMinor: {
+      name: 'Escala Natural Menor (Eólia)',
+      intervals: [0, 2, 3, 5, 7, 8, 10]
     }
   };
   
