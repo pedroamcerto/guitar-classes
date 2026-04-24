@@ -561,10 +561,34 @@ $pattern-d: #4CC9F0;
             }
             
             &.root-note {
-              width: 40px;
-              height: 40px;
-              font-size: 0.95rem;
-              border: 2px solid rgba(255, 255, 255, 0.5);
+              width: 42px;
+              height: 42px;
+              font-size: 1rem;
+              font-weight: 800;
+              border: 3px solid $text-color;
+              box-shadow:
+                0 0 0 3px rgba(164, 69, 237, 0.4),
+                0 8px 20px rgba(0, 0, 0, 0.4);
+              position: relative;
+              z-index: 2;
+
+              &::after {
+                content: 'T';
+                position: absolute;
+                top: -8px;
+                right: -8px;
+                width: 18px;
+                height: 18px;
+                border-radius: 50%;
+                background: $text-color;
+                color: $background;
+                font-size: 0.65rem;
+                font-weight: 800;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+              }
             }
           }
           
